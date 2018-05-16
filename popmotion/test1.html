@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Popmotion</title>
+  <script src="https://unpkg.com/popmotion/dist/popmotion.global.min.js"></script>
+  <style type="text/css">
+    .container script {
+      display: block;
+      background: #f0f0f0;
+    }
+    button {
+      padding: 5px 7px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div id="a">
+      <button>start</button>
+      <span class="counter">0</span>
+      <span class="counter1">0</span>
+    </div>
+    <script type="text/javascript">
+    const { tween } = window.popmotion
+    const counter = document.querySelector('#a .counter');
+    const counter1 = document.querySelector('#a .counter1');
+    const updateCounter = (v) => counter.innerHTML = v;
+    const updateCounter1 = (v) => counter1.innerHTML = v;
+
+    new tween({
+      to: 300,
+      duraction: 50
+    }).start(updateCounter);
+
+    new tween({
+      to: 100,
+      duraction: 1000
+    }).start(updateCounter1);
+    </script>
+  </div>
+</body>
+
+</html>

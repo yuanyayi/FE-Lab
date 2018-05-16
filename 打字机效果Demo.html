@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>打字机效果Demo</title>
+  <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+
+<body>
+  <style type="text/css" id="stylesheet"></style>
+  <pre id="content"></pre>
+</body>
+<script type="text/javascript">
+let str_list = []
+
+str_list.push({ type: 'text', str: `<p>这是一部简单的打字机，打字效果就是这样的。</p><p>让我们来输入一段样式代码：</p>` })
+str_list.push({ type: 'style', str: `#content { 
+  border: 1px solid #333; 
+  padding: 10px; 
+  font-size: 16px; 
+  background: rgba(120, 255, 0, .5)
+}` })
+str_list.push({ type: 'text', str: `<p>你看这段样式真的实现了！而且完全是原生代码哦！</p><p>就是样式惨了点</p>` })
+
+let pl = [] // promise_list
+function print(i) {
+  let str = str_list[i].str
+  let item = document.createElement("div")
+  item.id="div"+i
+  document.body.appendChild(item)
+  return new Promise(function (resolve, reject) {
+    if (i > 0) {
+      resolve(pl[i - 1])
+    }
+    let n = 0;
+    let len = str.length;
+    let printStrTimer = setInterval(() => {
+      if (n >= len) {
+        clearInterval(printStrTimer)
+        resolve('Interval has finished!')
+      }
+      n += 1
+      item.innerHTML = str.substr(0, n)
+    }, 50)
+  });
+}
+
+print(0).then(()=>{print(1)}).then(()=>{print(2)})
+
+
+// let n = 0
+// let finalCode = str_list.map((obj) => {
+//   return obj.str
+// }).join('\n')
+// console.log(finalCode)
+
+// let timer = setInterval(() => {
+//   n += 1
+//   show(finalCode, n)
+// }, 50)
+
+// function show(str, n, el) {
+//   if (n < 0) return
+//   el = el || document.getElementById('content')
+//   el.innerHTML = str.substr(0, n)
+// }
+
+// function printStyle(str, n) {
+//   if (n < 0) return
+//   document.getElementById('stylesheet').innerHTML = str.substr(0, n)
+// }
+</script>
+
+</html>
