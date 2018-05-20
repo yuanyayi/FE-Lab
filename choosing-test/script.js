@@ -42,4 +42,4 @@ function giveMeData(chooseAgain = 0, timesOfTests = 1000) {
   }
   return testList
 }
-console.log(giveMeData(1,1000))
+// console.log(giveMeData(1,1000))
