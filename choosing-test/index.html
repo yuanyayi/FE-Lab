@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>逻辑计算题</title>
+  <script type="text/javascript" src="https://cdn.bootcss.com/echarts/4.1.0.rc2/echarts.min.js"></script>
+</head>
+
+<body>
+  <div id="mainTable" style="width: 900px; height: 400px;"></div>
+</body>
+<script type="text/javascript" src="script.js"></script>
+<script type="text/javascript">
+  // 基于准备好的dom，初始化echarts实例
+  var myChart = echarts.init(document.getElementById('mainTable'));
+  var times = 1000
+  // 指定图表的配置项和数据
+  function createTable() {
+    var promise = new Promise(function (resolve, reject) {
+      var c1 = giveMeData(0, times)
+      var c2 = giveMeData(1, times)
+      resolve({ c1: c1, c2: c2 })
+    })
+    return promise
+  }
+  var timesArr = []
+  for (var i = 1; i <= times; i++) {
+    timesArr.push(i)
+  }
+  var option = {
+    title: {
+      text: '逻辑算法结果统计图'
+    },
+    tooltip: {},
+    dataZoom: {
+      type: 'slider'
+    },
+    legend: {
+      data: ['不可重选', '重新选择']
+    },
+    xAxis: {
+      type: 'category',
+      data: timesArr
+    },
+    yAxis: {
+      type: 'value',
+      data: [],
+      min: 0.15,
+    },
+    series: [{
+      name: '不可重选',
+      type: 'line'
+    }, {
+      name: '重新选择',
+      type: 'line'
+    }]
+  };
+  // 使用刚指定的配置项和数据显示图表。
+  myChart.setOption(option);
+  myChart.showLoading();
+  // 刷新数据
+  createTable().then(function (data) {
+    myChart.hideLoading();
+    myChart.setOption({
+      xAxis: {
+        data: timesArr
+      },
+      series: [{
+        name: '不可重选',
+        data: data.c1,
+      }, {
+        name: '重新选择',
+        data: data.c2,
+      }]
+    });
+    
+  })
+</script>
+
+</html>
