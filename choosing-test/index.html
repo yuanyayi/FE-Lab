@@ -4,10 +4,18 @@
 <head>
   <meta charset="UTF-8">
   <title>逻辑计算题</title>
+  <style type="text/css">
+    .title {
+      line-height: 24px;
+    }
+    .title button, .title input{
+      padding: 5px 10px;
+    }
+  </style>
 </head>
 
 <body>
-  <p>
+  <p class="title">
     <label for="times">在此输入试验次数，注意数值越大计算越慢：</label> <input name="times" id="times" type="number" value="1000">
     <button id="start">开始计算</button>
   </p>
@@ -53,9 +61,13 @@
   };
   // 使用刚指定的配置项和数据显示图表。
   myChart.setOption(option);
-  myChart.showLoading();
   document.getElementById('start').onclick = function () {
+    myChart.showLoading();
     times = document.getElementById('times').value
+    timesArr = []
+    for (var i = 1; i <= times; i++) {
+      timesArr.push(i)
+    }
     // 刷新数据
     function createTable() {
       var promise = new Promise(function (resolve, reject) {
