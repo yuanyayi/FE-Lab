@@ -27,7 +27,7 @@ function runOnce(chooseAgain) {
   return player.win
 }
 
-function runTests(chooseAgain, times = 10000) {
+function runTests(chooseAgain, times = 1000) {
   var finalPrice = 0
   for (var i = times; i > 0; i--) {
     finalPrice += runOnce(chooseAgain)
