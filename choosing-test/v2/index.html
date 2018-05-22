@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <title>逻辑计算题v2</title> <style type="text/css">
+    .title {
+      line-height: 24px;
+      margin-bottom: 20px;
+    }
+    .title button, .title input{
+      padding: 5px 10px;
+    }
+    .title p {
+      margin: auto;
+    }
+    .title label {
+      display: inline-block;
+      width: 320px;
+    }
+  </style> </head>
+
+<body>
+  <div class="title">
+    <p><label for="n">待选项个数：</label><input name="n" id="n" type="number" value="4"></p>
+    <p><label for="m">被排除的错误选项个数：</label><input name="m" id="m" type="number" value="1"></p>
+    <p><label for="times">在此输入试验次数，注意数值越大计算越慢：</label><input name="times" id="times" type="number" value="1000"></p>
+    <button id="start">开始计算</button>
+  </div>
+  <div id="mainTable" style="width: 900px; height: 600px;"></div>
+</body>
+<script type="text/javascript" src="echarts.common.min.js"></script>
+<script type="text/javascript" src="script.js"></script>
+<script type="text/javascript">
+  // 基于准备好的dom，初始化echarts实例
+  var myChart = echarts.init(document.getElementById('mainTable'));
+  var times = 1000
+  var timesArr = []
+  for (var i = 1; i <= times; i++) {
+    timesArr.push(i)
+  }
+  var option = {
+    title: {
+      text: '最后一次选择时的中奖率统计图'
+    },
+    tooltip: { trigger: 'axis' },
+    dataZoom: {
+      type: 'slider'
+    },
+    legend: {
+      data: ['不可重选', '重新选择(含已选)', '重新选择(不含已选)']
+    },
+    xAxis: {
+      type: 'category',
+      data: timesArr
+    },
+    yAxis: {
+      type: 'value',
+      data: [],
+      min: 0.15,
+    },
+    series: [{
+      name: '不可重选',
+      type: 'line',
+      markLine: {
+        symbol: "none",
+        data: [{
+          name: '平均线',
+          type: 'average',
+          lineStyle:{
+            normal: {
+              color: 'Gold',
+            }
+          }
+        }]
+      }
+    }, {
+      name: '重新选择(含已选)',
+      type: 'line',
+      markLine: {
+        symbol: "none",
+        data: [{
+          name: '平均线',
+          type: 'average',
+          lineStyle:{
+            normal: {
+              color: 'orange',
+            }
+          }
+        }]
+      }
+    }, {
+      name: '重新选择(不含已选)',
+      type: 'line',
+      markLine: {
+        symbol: "none",
+        data: [{
+          name: '平均线',
+          type: 'average',
+          lineStyle:{
+            normal: {
+              color: 'pink',
+            }
+          }
+        }]
+      }
+    }]
+  };
+  // 使用刚指定的配置项和数据显示图表。
+  myChart.setOption(option);
+  document.getElementById('start').onclick = function () {
+    myChart.showLoading();
+    times = document.getElementById('times').value
+    var n = document.getElementById('n').value
+    var m = document.getElementById('m').value
+    console.log(n,m,times)
+    timesArr = []
+    for (var i = 1; i <= times; i++) {
+      timesArr.push(i)
+    }
+    // 刷新数据
+    function createTable() {
+      var promise = new Promise(function (resolve, reject) {
+        var opt = {
+          n: n,
+          m: m,
+          timesOfTests: times
+        }
+        var c1 = giveMeData(Object.assign(opt, { chooseAgain: 0 }));
+        var c2 = giveMeData(Object.assign(opt, { chooseAgain: 1 }));
+        var c3 = giveMeData(Object.assign(opt, { chooseAgain: 2 }));
+        resolve({ c1: c1, c2: c2, c3: c3 })
+      })
+      return promise
+    }
+    // 指定图表的配置项和数据
+    createTable().then(function (data) {
+      myChart.hideLoading();
+      myChart.setOption({
+        xAxis: {
+          data: timesArr
+        },
+        series: [{
+          name: '不可重选',
+          data: data.c1,
+        }, {
+          name: '重新选择(含已选)',
+          data: data.c2,
+        }, {
+          name: '重新选择(不含已选)',
+          data: data.c3,
+        }]
+      });
+    })
+  }
+</script>
+
+</html>
