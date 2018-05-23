@@ -14,3 +14,14 @@
 ## 注意事项
 1. 编程模拟时，请不要引入任何主观想法，确保模拟客观、准确、完整，并与理论推导独立，即使是2选一，50%概率这种也不要在代码中体现，而应随机模拟二选一，避免把代码变成理论推导的公式计算器，能够达到相互验证的作用。
 2. 时间不限。考验的是交付能力，请确保在交付时已彻底解决，有100%自信能够面对与自己解答不符的观点，并通过讨论指出其中的问题。
+
+***
+## ******* 目录 *******
+
+### v1
+* 预览地址：[https://yuanyayi.github.io/FE-Lab/choosing-test/v1/index.html]
+* 代码地址：[https://github.com/yuanyayi/FE-Lab/tree/master/choosing-test/v1]
+
+### v2
+* 预览地址：[https://yuanyayi.github.io/FE-Lab/choosing-test/v1/index.html]
+* 代码地址：[https://github.com/yuanyayi/FE-Lab/tree/master/choosing-test/v1]
