@@ -5,69 +5,62 @@
   <meta charset="UTF-8">
   <title>基于jQuery的方形走马灯</title>
   <style type="text/css">
-  .running-horse-lantern {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-  }
-  .running-horse-lantern .item {
-    background: #e5e5e5;
-    color: #333;
-  }
-  .running-horse-lantern li {
-    box-sizing: border-box;
-    width: 120px;
-    height: 40px;
-    flex: 0 1 1;
-    text-align: center;
-    line-height: 40px;
-  }
-  .running-horse-lantern li.cur {
-    background: red;
-    color: white;
-  }
-  .running-horse-lantern li.play {
-    cursor: pointer;
-  }
+    .running-horse-lantern {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      position: relative;
+    }
 
+    .running-horse-lantern .item {
+      background: #e5e5e5;
+      color: #333;
+    }
+
+    .running-horse-lantern li {
+      box-sizing: border-box;
+      width: 120px;
+      height: 40px;
+      flex: 0 1 1;
+      text-align: center;
+      line-height: 40px;
+    }
+
+    .running-horse-lantern li.cur {
+      background: red;
+      color: white;
+    }
+
+    .running-horse-lantern .play {
+      padding: .5em;
+      border: 1px solid #333;
+      border-radius: 10px;
+      cursor: pointer;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .running-horse-lantern .play:hover {
+      box-shadow: 5px 3px 5px #dedede;
+    }
+
+    .running-horse-lantern .play:active {
+      box-shadow: none;
+    }
   </style>
   <script type="text/javascript" src="./script/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="./script/running-horse-lantern.js"></script>
 </head>
 
 <body>
-  <ul class="running-horse-lantern r1">
-    <li class="cur">1</li>
-    <li>2</li>
-    <li>3</li>
-    <li>4</li>
-    <li>5</li>
-    <li>16</li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li>6</li>
-    <li>15</li>
-    <li></li>
-    <li class="play start"></li>
-    <li></li>
-    <li>7</li>
-    <li>14</li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li>8</li>
-    <li>13</li>
-    <li>12</li>
-    <li>11</li>
-    <li>10</li>
-    <li>9</li>
-  </ul>
+  <ul class="running-horse-lantern r1"></ul>
 </body>
 <script type="text/javascript">
-let a = runningHorseLantern($('.r1'), 5)
+  let a = runningHorseLantern($('.r1'), 10, 8, 100, [1, 2, 3, 4, 5, 6, 7, 8, 10,'afda','wet','fgh'])
 </script>
 
 </html>
