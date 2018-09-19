@@ -60,7 +60,11 @@
   <ul class="running-horse-lantern r1"></ul>
 </body>
 <script type="text/javascript">
-  let a = runningHorseLantern($('.r1'), 10, 8, 100, [1, 2, 3, 4, 5, 6, 7, 8, 10,'afda','wet','fgh'])
+  let a = runningHorseLantern($('.r1'), 3, {
+    row: 4,
+    // dur: 500,
+    contents: ['Jenury','Febury', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+  })
 </script>
 
 </html>

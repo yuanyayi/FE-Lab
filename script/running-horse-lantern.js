@@ -1,11 +1,11 @@
-function runningHorseLantern(el, col, row, dur, contentArr) {
+function runningHorseLantern(el, col, opts) {
   // 需要容器元素
   if (!el) return false
   // init
   el.append('<li class="cur"></li>')
   el.width(col * el.children().eq(0).width())
   // 默认为方形
-  if (!row) row = col
+  let row = opts.row || col
   // 创建DOM
   let tempLi = ''
   for (let i = 1; i < col * row; i++) {
@@ -37,9 +37,10 @@ function runningHorseLantern(el, col, row, dur, contentArr) {
   }
   // 标识参与跑马的元素
   let indexlist = getIndexlist(col, row)
-  if (contentArr){
+  // 加入元素内容
+  if (opts.contents) {
     indexlist.map((index, i) => {
-      el.children('li').eq(index).addClass('item').text(contentArr[i] || 'empty')
+      el.children('li').eq(index).addClass('item').text(opts.contents[i] || 'empty')
     })
   }else{
     indexlist.map((index, i) => {
@@ -48,7 +49,7 @@ function runningHorseLantern(el, col, row, dur, contentArr) {
   }
   
   let cur = 0
-  let duraction = parseInt(dur) > 0 ? parseInt(dur) : 100
+  let duraction = parseInt(opts.dur) > 0 ? parseInt(opts.dur) : 100
   // 动作按钮行为
   play.on('click', function () {
     if ($(this).hasClass('start')) {
