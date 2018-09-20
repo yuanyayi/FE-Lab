@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <div>
+    <input type="file" id="f1" name="f1" accept="image/*" onchange="previewFile()"><br>
+    <img src="" id="preview" height="200" alt="Image preview..."><br>
+    <div id="screen"></div>
+  </div>
+</body>
+
+<script>
+  var f1 = document.getElementById("f1");
+  var preview = document.getElementById('preview');
+  var screen = document.getElementById('screen');
+
+  function previewFile() {
+    var file = f1.files[0];
+    var reader = new FileReader();
+
+    reader.addEventListener("load", function () {
+      let calcImg = new Image()
+      // 使用fileReader解决假地址的问题
+      calcImg.src = reader.result;
+      preview.src = reader.result;
+      // 输出
+      let customUnit = 'KB';
+      preview.onload = function () {
+        screen.innerText =
+          `naturalWidth=${calcImg.naturalWidth}px; naturalHeight=${calcImg.naturalHeight}px;`;
+        screen.innerText +=
+          `\nWidth=${calcImg.width}px; Height=${calcImg.height}px;`;
+        screen.innerText += `\nSize=${formatSize(file.size, customUnit) + customUnit}; (size=${file.size})`;
+        console.log(reader)
+      }
+    }, false);
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function formatSize(byte, customUnit) {
+    let distance = 1024
+    let fix = 2 * 10
+    let unit = customUnit.toLowerCase() || 'kb'
+    let result = 0
+    result = unit === 'kb' ? Math.ceil(byte / distance * fix) / fix : result
+    result = unit === 'mb' ? Math.ceil(byte / distance / distance * fix) / fix : result
+
+    return result
+  }
+</script>
+
+</html>
