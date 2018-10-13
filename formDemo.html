@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>测试表单元素</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <style>
+    input[type="submit"] {
+      padding: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <p>简单测试表单的页面，请打开控制台。</p>
+  <!-- <form name="myForm" id="myForm" action="" enctype="application/x-www-form-urlencoded"> -->
+  <form name="myForm" id="myForm" action="" enctype="multipart/form-data">
+    <div>
+      <label for="phone">电话号码：</label><input type="text" id="phone" value="18501292360">
+    </div>
+    <div>
+      <label>输入：</label>
+      <label for="username">
+        <input type="text" name="username" value="Lily" placeholder="User name here">
+      </label>
+    </div>
+    <div>
+      <label>一个多选：</label>
+      <label for="hobbies"><input type="checkbox" name="hobbies" value="reading">reading</label>
+      <label for="hobbies"><input type="checkbox" name="hobbies" value="painting">painting</label>
+      <label for="hobbies"><input type="checkbox" name="hobbies" value="writing">writing</label>
+      <label for="hobbies"><input type="checkbox" name="hobbies" value="swiming">swiming</label>
+      <label for="hobbies"><input type="checkbox" name="hobbies" value="computer">computer</label>
+    </div>
+    <div>
+      <label>单选：</label>
+      <label for="sex"><input type="radio" name="sex" value="female" checked>female</label>
+      <label for="sex"><input type="radio" name="sex" value="male">male</label>
+      <label for="sex"><input type="radio" name="sex" value="not to tell">not to tell</label>
+    </div>
+    <div>
+      <label>一段文字：</label>
+      <textarea name="para" id="" cols="30" rows="10" placeholder="输入一段文字"></textarea>
+    </div>
+    <div>
+      <label for="myFile">一个文件：</label>
+      <input type="file" name="myFile">
+    </div>
+    <div>
+      <label>这里有一个隐藏域：</label>
+      <input type="hidden" name="hidden" value="here is a hidden message.">
+    </div>
+    <div><input type="submit" value="在控制台打印出表单序列化的结果"><br />
+  </form>
+
+  <script>
+    var obj = {}
+    var form = document.querySelector("form")
+    form.onsubmit = function (ev) {
+      ev.preventDefault();
+      console.log($("form").serializeArray());
+      obj = new FormData(document.querySelector("form"))
+      console.log("一些方法：")
+      console.log('obj.get("hobbies") --- ', obj.get("hobbies"))
+      console.log('obj.getAll("hobbies") --- ', obj.getAll("hobbies"))
+      console.log('obj.get("myFile") --- ', obj.get("myFile"))
+    }
+  </script>
+
+</html>
