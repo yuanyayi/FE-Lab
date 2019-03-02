@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <title>原生JS整屏滚动方案</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <style>
+    body {
+      margin: 0;
+    }
+
+    .fullpage {
+      display: block;
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    .fullpage .wrap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      margin: auto;
+      transition: left 1s ease-out 0s, top 1s ease-out 0s;
+    }
+
+    .fullpage .page {
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" class="fullpage">
+    <div class="wrap">
+      <div class="page" style="background: red">
+        <div>这是一份简单的原生JS整屏滚动方案。基本思路是轮播图绝对定位。这种定位遇到某一页面内部有滚动行为时会产生冲突。</div>
+      </div>
+      <div class="page" style="background: yellow">d2</div>
+      <div class="page" style="background: blue">d3</div>
+    </div>
+  </div>
+  <script>
+    function FullPageScroll(selector, direction = "row") {
+      let el = document.querySelector(selector);
+      if (!el) {
+        console.info("构造整屏失败: 请指定有效的整屏容器!");
+        return false;
+      }
+      let pages = [].map.call(el.querySelectorAll(".page"), _ => _);
+      if (pages.length === 0) {
+        console.info("构造整屏失败: 没有找到整屏内容!");
+        return false;
+      }
+      let wrap = el.querySelector(".wrap");
+      let current = 0;
+      // 定位
+      if (direction === "column") {
+        pages.forEach((page, index) => {
+          page.style.left = 0;
+          page.style.top = (index * 100) + "vh";
+        })
+        el.ontouchup = function () {
+          current = current + 1 < pages.length ? current + 1 : current;
+          wrap.style.top = -(current * 100) + "vh";
+        }
+        el.ontouchdown = function () {
+          current = current - 1 >= 0 ? current - 1 : current;
+          wrap.style.top = -(current * 100) + "vh";
+        }
+      } else if (direction === "row") {
+        pages.forEach((page, index) => {
+          page.style.left = (index * 100) + "vw";
+          page.style.top = 0;
+        })
+        el.ontouchleft = function () {
+          current = current + 1 < pages.length ? current + 1 : current;
+          wrap.style.left = -(current * 100) + "vw";
+        }
+        el.ontouchright = function () {
+          current = current - 1 >= 0 ? current - 1 : current;
+          wrap.style.left = -(current * 100) + "vw";
+        }
+      }
+      // 触摸判断；无需修改的代码。
+      el.ontouchstart = (ev1) => {
+        let p1 = [ev1.touches[0].screenX, ev1.touches[0].screenY];
+        let p2 = [null, null];
+        el.ontouchend = (ev2) => {
+          p2 = [ev2.changedTouches[0].screenX, ev2.changedTouches[0].screenY];
+          console.log(touchDirection());
+          // 
+          let abc = typeof el["ontouch" + touchDirection()];
+          if (el["ontouch" + touchDirection()] && typeof el["ontouch" + touchDirection()] === "function") {
+            el["ontouch" + touchDirection()](ev1, ev2);
+          }
+        }
+
+        function touchDirection() {
+          let diff = 10; // 位移误差量，留给点击事件的。
+          // x>y ? 横划 : 竖划
+          if (Math.abs(p2[0] - p1[0]) - Math.abs(p2[1] - p1[1]) > diff) {
+            return p2[0] > p1[0] ? "right" : "left";
+          } else if (Math.abs(p2[0] - p1[0]) - Math.abs(p2[1] - p1[1]) < -diff) {
+            return p2[1] > p1[1] ? "down" : "up";
+          } else {
+            return "notmove"
+          }
+        }
+      }
+      // functions
+      this.getCurrent = () => {
+        return current;
+      }
+    }
+    let oc = new FullPageScroll("#app", "column");
+  </script>
+</body>
+
+</html>
